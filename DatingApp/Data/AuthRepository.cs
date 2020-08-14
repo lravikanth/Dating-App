@@ -64,10 +64,7 @@ namespace DatingApp.Data
                 passwordSalt = hmac.Key;
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
-
-            VerifyPasswordHash(password, passwordHash,passwordSalt);
         }
-
         public async Task<bool> UserExists(string username)
         {
             if (await _context.Users.AnyAsync(x => x.UserName == username))

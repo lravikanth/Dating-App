@@ -1,3 +1,4 @@
+
 using System.Text;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,8 @@ using Microsoft.IdentityModel.Tokens;
 using System.Net;
 using Microsoft.AspNetCore.Diagnostics;
 using DatingApp.Helpers;
+using StackExchange.Profiling;
+using AutoMapper;
 
 namespace DatingApp
 {
@@ -34,9 +37,12 @@ namespace DatingApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddMiniProfiler(options => options.RouteBasePath = "/profiler").AddEntityFramework();
             services.AddControllers();
             services.AddCors();
+            services.AddAutoMapper(typeof(DatingRepository).Assembly); // give any class in assembly for autoMapper to get assembly info.
             services.AddScoped<IAuthRepository,AuthRepository>();
+            services.AddScoped<IDatingRepository,DatingRepository>();
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(option => {
                 option.TokenValidationParameters = new TokenValidationParameters 
@@ -72,6 +78,7 @@ namespace DatingApp
             //app.UseHttpsRedirection();
 
             app.UseRouting();
+             app.UseMiniProfiler();
             app.UseCors(x => x.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
             app.UseAuthentication();
             app.UseAuthorization();
