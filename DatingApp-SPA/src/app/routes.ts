@@ -1,14 +1,18 @@
+import { MemberListResolver } from './_resolvers/member-list.resolver';
 import { AuthGuard } from './_gaurds/auth.guard';
 import { Component } from '@angular/core';
-import { Routes, CanActivate } from '@angular/router';
+import { Routes, CanActivate, Resolve } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error-interceptor';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MemberListComponent } from './member-list/member-list.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
+import { MemberDetailsComponent } from './members/member-details/member-details.component';
+import { MemberDetailResolver } from './_resolvers/member-details.resolver';
+
 
 
 export const appRoutes: Routes = [
@@ -17,7 +21,8 @@ export const appRoutes: Routes = [
       runGuardsAndResolvers: 'always',
       canActivate: [AuthGuard],
       children: [
-        { path: 'members', component: MemberListComponent},
+        { path: 'members', component: MemberListComponent, resolve: {users : MemberListResolver} },  
+        { path: 'members/:id', component: MemberDetailsComponent,resolve:{user: MemberDetailResolver } }, //'users' is how data is accessed on component
         { path: 'messages', component: MessagesComponent },
         { path: 'lists', component: ListComponent }
       ], 

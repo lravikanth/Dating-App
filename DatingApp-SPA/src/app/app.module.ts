@@ -1,3 +1,8 @@
+import { UserService } from './_services/user.service';
+import { AuthGuard } from './_gaurds/auth.guard';
+import { AlertifyService } from './_services/alertify.service';
+
+import { MemberDetailsComponent } from './members/member-details/member-details.component';
 import { appRoutes } from './routes';
 
 import { BrowserModule } from '@angular/platform-browser';
@@ -14,11 +19,19 @@ import { RegisterComponent } from './register/register.component';
 import { ErrorInterceptorProvider } from './_services/error-interceptor';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MemberListComponent } from './member-list/member-list.component';
+import { MemberListComponent } from './members/member-list/member-list.component';
 import { ListComponent } from './list/list.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RouterModule } from '@angular/router';
+import { MemberCardComponent } from './members/member-card/member-card.component';
+import { JwtModule } from '@auth0/angular-jwt';
+import { TabsModule } from 'ngx-bootstrap/tabs';
+import { MemberDetailResolver } from './_resolvers/member-details.resolver';
+import { MemberListResolver } from './_resolvers/member-list.resolver';
 
+export function tokenGetter() {
+  return localStorage.getItem('token');
+}
 
 @NgModule({
   declarations: [							
@@ -28,7 +41,9 @@ import { RouterModule } from '@angular/router';
       RegisterComponent,
       MemberListComponent,
       ListComponent,
-      MessagesComponent
+      MessagesComponent,
+      MemberCardComponent,
+      MemberDetailsComponent
    ],
   imports: [
     BrowserModule,
@@ -36,12 +51,26 @@ import { RouterModule } from '@angular/router';
     HttpClientModule,
     FormsModule,
     BrowserAnimationsModule,
+    TabsModule.forRoot(), 
     BsDropdownModule.forRoot(),
-    RouterModule.forRoot(appRoutes)
+    RouterModule.forRoot(appRoutes),
+    JwtModule.forRoot({
+        config: {
+          tokenGetter: tokenGetter,
+          allowedDomains: ['localhost:5000'],
+          disallowedRoutes: ['http://localhost:5000/api/auth']
+        }
+      }
+    )
   ],
   providers: [
     AuthService,
-    ErrorInterceptorProvider
+    ErrorInterceptorProvider,
+    AlertifyService,
+    AuthGuard,
+    UserService,
+    MemberDetailResolver,
+    MemberListResolver
   ],
   bootstrap: [AppComponent]
 })
