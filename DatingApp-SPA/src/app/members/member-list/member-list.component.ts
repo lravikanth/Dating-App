@@ -15,6 +15,7 @@ users: User[];
   constructor(private userService: UserService, private alert: AlertifyService,private route: ActivatedRoute  ) { }
 
   ngOnInit() {
+    console.log("in member list");
     this.route.data.subscribe(data => {
       this.users = data['users'];
     });
