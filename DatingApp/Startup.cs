@@ -40,6 +40,7 @@ namespace DatingApp
             services.AddMiniProfiler(options => options.RouteBasePath = "/profiler").AddEntityFramework();
             services.AddControllers();
             services.AddCors();
+            services.Configure<CloudinaySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(DatingRepository).Assembly); // give any class in assembly for autoMapper to get assembly info.
             services.AddScoped<IAuthRepository,AuthRepository>();
             services.AddScoped<IDatingRepository,DatingRepository>();
