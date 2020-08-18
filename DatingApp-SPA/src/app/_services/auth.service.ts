@@ -37,8 +37,8 @@ loggedIn() {
   return !this.jwtHealper.isTokenExpired(token);
 }
 
-register(model: any) {
-  return this.http.post(this.baseUrl + 'register', model);
+register(user: user) {
+  return this.http.post(this.baseUrl + 'register', user);
 }
 
 }
