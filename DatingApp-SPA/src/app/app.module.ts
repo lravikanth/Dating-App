@@ -1,7 +1,7 @@
 import { UserService } from './_services/user.service';
 import { AuthGuard } from './_gaurds/auth.guard';
 import { AlertifyService } from './_services/alertify.service';
-
+import {TimeAgoPipe} from 'time-ago-pipe';
 import { MemberDetailsComponent } from './members/member-details/member-details.component';
 import { appRoutes } from './routes';
 
@@ -50,7 +50,8 @@ export function tokenGetter() {
       MemberCardComponent,
       MemberDetailsComponent,
       MemberEditComponent,
-      PhotoEditorComponent
+      PhotoEditorComponent,
+      TimeAgoPipe
    ],
   imports: [
     BrowserModule,

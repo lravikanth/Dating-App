@@ -39,6 +39,7 @@ namespace DatingApp
             services.AddDbContext<DataContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddMiniProfiler(options => options.RouteBasePath = "/profiler").AddEntityFramework();
             services.AddControllers();
+            services.AddScoped<LogUserActivity>();
             services.AddCors();
             services.Configure<CloudinaySettings>(Configuration.GetSection("CloudinarySettings"));
             services.AddAutoMapper(typeof(DatingRepository).Assembly); // give any class in assembly for autoMapper to get assembly info.
